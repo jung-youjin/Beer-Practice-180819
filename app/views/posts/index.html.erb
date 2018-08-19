@@ -197,7 +197,7 @@ function myFunc() {
           infowindow.open(smap,marker2);
         });
         
-        google.maps.event.addListener(smap, 'click', function(event) {
+ /*       google.maps.event.addListener(smap, 'click', function(event) {
             //placeMarker(smap, event.LatLng);
         //});
         
@@ -215,8 +215,43 @@ function myFunc() {
              console.log("zzz");
             infowindow.open(smap,marker);
         });
+        */
         
         
+  <% @posts .each do |post| %>
+  var marker = new google.maps.Marker({
+    position: {lat: <%= post.x %>, lng: <%= post.y %>},
+    map: smap,
+    title: "<%= post.title %>",
+    icon: "<%= asset_path 'foodTruck2.png' %>"
+  });
+  marker.addListener('click', function(){
+    $.ajax({
+      url: "/posts_ajax/"+<%= post.id %>
+    });
+  })
+  marker.setMap(smap);
+<%end%>
+
+  var beforeMarker;
+  google.maps.event.addListener(smap, 'click', function(event) {
+    console.log("dd");
+    var contentString = "<div><a href='/posts/new/"+event.latLng.lat().toString().replace(".","a")+"/"+event.latLng.lng().toString().replace(".","a")+"">브루어리 추가!</a></div>";
+    var marker = new google.maps.Marker({
+      position: event.latLng,
+      map: smap
+    });
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    console.log("zzz");
+
+    infowindow.open(smap,marker);
+
+  });
+        
+
+
 
 </script>
 </div>

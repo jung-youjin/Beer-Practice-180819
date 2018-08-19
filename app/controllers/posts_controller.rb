@@ -16,6 +16,8 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     @posts = Post.all
+    @lat = params[:lat]#.sub("a",".")
+    @lng = params[:lng]#.sub("a",".")
   end
 
   # GET /posts/1

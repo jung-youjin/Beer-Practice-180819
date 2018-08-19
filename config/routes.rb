@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
+    resources :posts, except: :new
   get 'searchcheck/search'
+  
+  get 'posts/new/:lat/:lng' => 'posts#new', as: 'new_post'
 
   get 'home/csvsave'
+  
+  get 'posts_ajax/:post_id' => 'posts#ajaxIndex'
 
   root 'posts#index'
+  
   resources :posts do
     collection do
       get:search
