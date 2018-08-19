@@ -1,0 +1,225 @@
+<p id="notice"><%= notice %></p>
+
+
+<head>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArXEvyWLOJs-JGPMjqpTSRMYgVyol8dX8"></script>
+            <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+
+    </style>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  background-color: #f1f1f1;
+}
+</style>
+</head>
+<body>
+
+<h2>Hashtags Search</h2>
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+<table id="myTable">
+  <tr class="header">
+    <th style="width:60%;">Hashtags</th>
+  </tr>
+  <tr>
+    <td>a</td>
+  </tr>
+  <tr>
+    <td>b</td>
+  </tr>
+  <tr>
+    <td>c</td>
+  </tr>
+
+</table>
+
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
+
+
+
+<h2> Search </h2>
+<br>
+<%= form_tag search_posts_path, :onkeyup => 'myFunc()', :id => "searchspot", :method => :get do %>
+<%= text_field_tag :query, params[:query] %> <%= submit_tag "Search!" %>
+<% end %>
+
+<script>
+function myFunc() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("searchspot");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
+
+
+<h1>Listing Posts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Content</th>
+      <th>Hashtag</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.title %></td>
+        <td><%= post.content %></td>
+        <td><%= post.hashtag %></td>
+        <td><%= link_to 'Show', post %></td>
+        <td><%= link_to 'Edit', edit_post_path(post) %></td>
+        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Post', new_post_path %>
+
+
+
+
+
+
+<div>
+<tbody>
+    <%# @post.each do |p| %>
+      <tr>
+        <td><%#= p.title %></td>
+        <td><%#= p.content %></td>
+    <%# end %>
+  </tbody>
+</table>
+</div>
+
+
+<div class="bodywrapper">
+<div class="container">
+<div id="map"></div>
+<script>
+        var seoul = {lat: 37.557216,lng: 126.987319};
+        var smap = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: seoul
+            
+        });
+        
+        
+        var first =  {lat: 37.4987493,lng: 126.9954321};
+        //var second = {lat: 37.5567904,lng: 126.973718};
+        var second = new google.maps.LatLng(37.5567904,126.973718);
+        var marker1 = new google.maps.Marker({position: first,title: "크래프트 브로스", label: "크래프트 브로스", map: smap, icon:'beer2.png'});
+        var marker2 = new google.maps.Marker({position: second, label: "아트 몬스터", map: smap, icon:'beer2.png'});
+
+        var infowindow = new google.maps.InfoWindow({
+            content: "Brewery"
+        });
+        
+        marker1.addListener('click', function() {
+          infowindow.open(smap,marker1);
+        });
+        
+        marker2.addListener('click', function() {
+          infowindow.open(smap,marker2);
+        });
+        
+        google.maps.event.addListener(smap, 'click', function(event) {
+            //placeMarker(smap, event.LatLng);
+        //});
+        
+        //function placeMarker(map, location) {
+            //console.log("");
+            var marker = new google.maps.Marker({
+                position: event.LatLng,
+                map: smap
+            });
+            var infowindow = new google.maps.InfoWindow({
+                content: 'Latitude: ' + event.lat() + 
+                '<br>Longtitude: ' + event.lng()
+                
+            });
+             console.log("zzz");
+            infowindow.open(smap,marker);
+        });
+        
+        
+
+</script>
+</div>
+</div>
+<!--<div class="footer">ⓒ 2018  Beer SNS</div>-->
+</body>
