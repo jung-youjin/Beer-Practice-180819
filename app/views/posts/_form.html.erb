@@ -23,7 +23,18 @@
     <%= f.label :hashtag %><br>
     <%= f.text_field :hashtag %>
   </div>
+  <div class="field">
+    <%= f.hidden_field :x, id: :post_x , step: :any, value: @lat%>
+  </div>
+
+  <div class="field">
+    <%= f.hidden_field :y, id: :post_y , step: :any, value: @lng%>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>
 <% end %>
+
+<script>
+  console.log(<%=@post.y%>);
+</script>

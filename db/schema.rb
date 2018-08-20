@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180819045559) do
+ActiveRecord::Schema.define(version: 20180820050003) do
 
   create_table "beerdbs", force: :cascade do |t|
     t.string   "num"
@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 20180819045559) do
     t.string   "hashtag"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "x"
-    t.integer  "y"
+    t.float    "x"
+    t.float    "y"
   end
 
 end

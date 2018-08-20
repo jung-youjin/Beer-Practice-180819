@@ -16,8 +16,7 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     @posts = Post.all
-    @lat = params[:lat]#.sub("a",".")
-    @lng = params[:lng]#.sub("a",".")
+
   end
 
   # GET /posts/1
@@ -28,7 +27,20 @@ class PostsController < ApplicationController
 
   # GET /posts/new
   def new
-    @post = Post.new
+    
+    @lat = params[:lat].sub("a",".")
+    @lng = params[:lng].sub("a",".")
+    
+    @post = Post.new(:x => @lat, :y => @lng)
+    
+    @post.x = params[:lat]
+    @post.y = params[:lng]
+    @post.save
+    
+    #query = "INSERT INTO post (x, y) VALUES ('#{@post.x}', '#{@post.y}')  "
+    #query = "INSERT INTO bookmark (title , url, tags) VALUES (#{@user_new.title}, #{@user_new.url}, #{tags[0]})  "
+
+    #Post.connection.execute(query);
   end
 
   # GET /posts/1/edit
@@ -68,6 +80,7 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
+    @post =Post.find(params[:id])
     @post.destroy
     respond_to do |format|
       format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
@@ -83,6 +96,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:title, :content, :hashtag)
+      params.require(:post).permit(:title, :content, :hashtag, :x, :y)
     end
 end

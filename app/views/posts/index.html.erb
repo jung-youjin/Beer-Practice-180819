@@ -128,6 +128,8 @@ function myFunc() {
       <th>Title</th>
       <th>Content</th>
       <th>Hashtag</th>
+      <th>X</th>
+      <th>Y</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -138,6 +140,8 @@ function myFunc() {
         <td><%= post.title %></td>
         <td><%= post.content %></td>
         <td><%= post.hashtag %></td>
+        <td><%= post.x %></td>
+        <td><%= post.y %></td>
         <td><%= link_to 'Show', post %></td>
         <td><%= link_to 'Edit', edit_post_path(post) %></td>
         <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -148,7 +152,7 @@ function myFunc() {
 
 <br>
 
-<%= link_to 'New Post', new_post_path %>
+<%#= link_to 'New Post', new_post_path %>
 
 
 
@@ -170,6 +174,7 @@ function myFunc() {
 <div class="bodywrapper">
 <div class="container">
 <div id="map"></div>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyArXEvyWLOJs-JGPMjqpTSRMYgVyol8dX8"></script>
 <script>
         var seoul = {lat: 37.557216,lng: 126.987319};
         var smap = new google.maps.Map(document.getElementById('map'), {
@@ -218,6 +223,7 @@ function myFunc() {
         */
         
         
+  var markers = [];      
   <% @posts .each do |post| %>
   var marker = new google.maps.Marker({
     position: {lat: <%= post.x %>, lng: <%= post.y %>},
@@ -226,17 +232,26 @@ function myFunc() {
     icon: "<%= asset_path 'foodTruck2.png' %>"
   });
   marker.addListener('click', function(){
+    console.log("hello");
     $.ajax({
       url: "/posts_ajax/"+<%= post.id %>
     });
   })
+  console.log(<%=post.x%>);
   marker.setMap(smap);
-<%end%>
 
-  var beforeMarker;
+
+  var beforMarker;
   google.maps.event.addListener(smap, 'click', function(event) {
-    console.log("dd");
-    var contentString = "<div><a href='/posts/new/"+event.latLng.lat().toString().replace(".","a")+"/"+event.latLng.lng().toString().replace(".","a")+"">브루어리 추가!</a></div>";
+    console.log("hi");
+    var contentString = "<div><a href='/posts/new/"+event.latLng.lat().toString().replace(".","a")+"/"+event.latLng.lng().toString().replace(".","a")+"'>브루어리 추가!</a></div>";
+/*      var marker = new google.maps.InfoWindow({
+    position: {lat: 37.55628, lng: 126.93694};
+  }); */
+  //  <%#= @lat %> = event.latLng.lat();
+    console.log(event.latLng.lat());
+    
+      
     var marker = new google.maps.Marker({
       position: event.latLng,
       map: smap
@@ -249,8 +264,8 @@ function myFunc() {
     infowindow.open(smap,marker);
 
   });
-        
-
+  <%end%>      
+$()
 
 
 </script>

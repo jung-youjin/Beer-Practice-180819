@@ -4,6 +4,7 @@ gem 'rails_db'
 gem 'progress_bar'
 gem 'sunspot_rails'
 gem 'sunspot_solr'
+gem 'mini_magick', '~> 4.8'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
 # Use sqlite3 as the database for Active Record
