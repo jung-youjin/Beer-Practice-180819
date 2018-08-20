@@ -42,6 +42,15 @@ class PostsController < ApplicationController
 
     #Post.connection.execute(query);
   end
+  
+  def ajaxIndex
+    if params[:post_id]
+      @post = Post.find(params[:post_id])
+    end
+    respond_to do |format|
+      format.js { render 'index.js.erb' }
+    end
+  end
 
   # GET /posts/1/edit
   def edit
